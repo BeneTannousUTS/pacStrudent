@@ -140,8 +140,6 @@ public class LevelGenerator : MonoBehaviour
         bool hasPelletAbove = (row > 0) && (expandedLevelMap[row - 1, col] == 5 || expandedLevelMap[row - 1, col] == 6);
         bool hasPelletBelow = (row < expandedLevelMap.GetLength(0) - 1) && (expandedLevelMap[row + 1, col] == 5 || expandedLevelMap[row + 1, col] == 6);
 
-        bool surroundedByEmpty = (leftTile == 0 ? 1 : 0) + (rightTile == 0 ? 1 : 0) + (aboveTile == 0 ? 1 : 0) + (belowTile == 0 ? 1 : 0) == 3;
-
 
         if (tileType == 1) // Outer Corner
         {
@@ -164,39 +162,60 @@ public class LevelGenerator : MonoBehaviour
         else if (tileType == 3) // Inner Corner - prioritise more complex corners
         {
             if ((leftTile == 4 && rightTile == 4 && aboveTile == 3 && belowTile == 4 && (bottomRightTile == 5 || bottomRightTile == 0))
-                || (leftTile == 3 && rightTile == 4 && aboveTile == 4 && belowTile == 4 && (bottomRightTile == 5 || bottomRightTile == 0))) //top left
-                return TileRotation.Rotate180;
+                || (leftTile == 3 && rightTile == 4 && aboveTile == 4 && belowTile == 4 && (bottomRightTile == 5 || bottomRightTile == 0))) 
+                return TileRotation.Rotate180;//top left
 
             else if ((belowTile == 4 && leftTile == 4 && aboveTile == 3 && rightTile == 4 && (bottomLeftTile == 5 || bottomLeftTile == 0)) 
-                || (leftTile == 4 && rightTile == 3 && aboveTile == 4 && belowTile == 4 && (bottomLeftTile == 5 || bottomLeftTile == 0))) //top right
-                return TileRotation.Rotate90;
+                || (leftTile == 4 && rightTile == 3 && aboveTile == 4 && belowTile == 4 && (bottomLeftTile == 5 || bottomLeftTile == 0))) 
+                return TileRotation.Rotate90;//top right
 
             else if ((leftTile == 4 && rightTile == 4 && aboveTile == 4 && belowTile == 3 && (topRightTile == 5 || topRightTile == 0)) 
-                || (leftTile == 3 && rightTile == 4 && aboveTile == 4 && belowTile == 4 && (topRightTile == 5 || topRightTile == 0))) //bottom left
-                return TileRotation.Rotate270;
+                || (leftTile == 3 && rightTile == 4 && aboveTile == 4 && belowTile == 4 && (topRightTile == 5 || topRightTile == 0))) 
+                return TileRotation.Rotate270;//bottom left
 
               else if ((leftTile == 4 && rightTile == 3 && aboveTile == 4 && belowTile == 4 && (topLeftTile == 5 || topLeftTile == 0))
-                || (leftTile == 4 && rightTile == 4 && aboveTile == 4 && belowTile == 3 && (topLeftTile == 5 || topLeftTile == 0)))//bottom right
-                return TileRotation.Default;
+                || (leftTile == 4 && rightTile == 4 && aboveTile == 4 && belowTile == 3 && (topLeftTile == 5 || topLeftTile == 0)))
+                return TileRotation.Default;//bottom right
 
-            else if ((rightTile == 4 && belowTile == 4) || (belowTile == 3 && rightTile == 4) || (rightTile == 3 && belowTile == 4)) //top left
-                return TileRotation.Rotate180;
-            else if ((rightTile == 4 && aboveTile == 4) || (rightTile == 4 && aboveTile == 3) || (rightTile == 3 && aboveTile == 4)) //bottom left
-                return TileRotation.Rotate270;
-            else if ((leftTile == 4 && belowTile == 4) || (leftTile == 3 && belowTile == 4) || (leftTile == 4 && belowTile == 3)) //top right
-                return TileRotation.Rotate90;
-            else if ((leftTile == 4 && aboveTile == 4) || (leftTile == 3 && aboveTile == 4) || (leftTile == 4 && aboveTile == 3)) //bottom right
-                return TileRotation.Default;
+            else if ((rightTile == 4 && belowTile == 4) 
+                || (belowTile == 3 && rightTile == 4) 
+                || (rightTile == 3 && belowTile == 4)) 
+                return TileRotation.Rotate180;//top left
+
+            else if ((rightTile == 4 && aboveTile == 4) 
+                || (rightTile == 4 && aboveTile == 3) 
+                || (rightTile == 3 && aboveTile == 4)) 
+                return TileRotation.Rotate270;//bottom left
+
+            else if ((leftTile == 4 && belowTile == 4) 
+                || (leftTile == 3 && belowTile == 4) 
+                || (leftTile == 4 && belowTile == 3)) 
+                return TileRotation.Rotate90;//top right
+
+            else if ((leftTile == 4 && aboveTile == 4) 
+                || (leftTile == 3 && aboveTile == 4) 
+                || (leftTile == 4 && aboveTile == 3)) 
+                return TileRotation.Default;//bottom right
 
         }
         else if (tileType == 4) // Inner Wall
         {
-            if (surroundedByEmpty)
-                return TileRotation.Default; // Keep the current rotation
-            else if ((leftTile == 4 || leftTile == 3) && (rightTile == 4 || rightTile == 3))
+            if ((leftTile == 4 || leftTile == 3) 
+                && (rightTile == 4 || rightTile == 3))
                 return TileRotation.Rotate90; // Horizontal rotation
-            else if ((aboveTile == 4 || aboveTile == 3) && (belowTile == 4 || belowTile == 3))
+
+            else if ((aboveTile == 4 || aboveTile == 3) 
+                && (belowTile == 4 || belowTile == 3))
                 return TileRotation.Default; // Vertical rotation
+
+            else if (((leftTile == 4 || leftTile == 3) && rightTile == 0 && aboveTile == 0 && belowTile == 0)
+                || (leftTile == 0 && (rightTile == 4 || rightTile == 3) && aboveTile == 0 && belowTile == 0))
+                return TileRotation.Rotate90; // Horizontal rotation
+
+            else if ((leftTile == 0 && rightTile == 0 && (aboveTile == 3 || aboveTile == 4) && belowTile == 0)
+                || (leftTile == 0 && rightTile == 0 && aboveTile == 0 && (belowTile == 3 || belowTile == 4)))
+                return TileRotation.Default; // Vertical rotation
+
         }
         else if (tileType == 7) // T-Junction
         {
