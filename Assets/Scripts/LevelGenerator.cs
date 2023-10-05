@@ -43,9 +43,12 @@ public class LevelGenerator : MonoBehaviour
             {0,0,0,0,0,0,5,0,0,0,4,0,0,0},
         };
 
+    int[,] expandedLevelMap;
+
     void Start()
     {
         clearScene();
+        expandLevelMap();
         GenerateMaze();
     }
 
@@ -66,14 +69,14 @@ public class LevelGenerator : MonoBehaviour
     }
     void GenerateMaze()
     {
-        int numRows = levelMap.GetLength(0);
-        int numCols = levelMap.GetLength(1);
+        int numRows = expandedLevelMap.GetLength(0);
+        int numCols = expandedLevelMap.GetLength(1);
 
         for (int row = 0; row < numRows; row++)
         {
             for (int col = 0; col < numCols; col++)
             {
-                int tileType = levelMap[row, col];
+                int tileType = expandedLevelMap[row, col];
                 Vector3 tilePosition = new Vector3(col * tileSize, -row * tileSize, 0);
 
                 GameObject prefabToInstantiate = null;
@@ -100,7 +103,7 @@ public class LevelGenerator : MonoBehaviour
                         prefabToInstantiate = powerPelletPrefab;
                         break;
                     case 7:
-                        prefabToInstantiate = outsideCornerPrefab; //my outside corner sprite can work as a t junction
+                        prefabToInstantiate = tJunctionPrefab; //my outside corner sprite can work as a t junction
                         break;
                     default:
                         // Empty space (tileType 0), do nothing.
@@ -121,31 +124,111 @@ public class LevelGenerator : MonoBehaviour
 
     TileRotation CalculateTileRotation(int row, int col)
     {
-        // Check neighboring tiles to determine rotation.
-        int tileType = levelMap[row, col];
-        int leftTile = (col > 0) ? levelMap[row, col - 1] : 0;
-        int rightTile = (col < levelMap.GetLength(1) - 1) ? levelMap[row, col + 1] : 0;
-        int aboveTile = (row > 0) ? levelMap[row - 1, col] : 0;
-        int belowTile = (row < levelMap.GetLength(0) - 1) ? levelMap[row + 1, col] : 0;
+        int tileType = expandedLevelMap[row, col];
+        int leftTile = (col > 0) ? expandedLevelMap[row, col - 1] : 0;
+        int rightTile = (col < expandedLevelMap.GetLength(1) - 1) ? expandedLevelMap[row, col + 1] : 0;
+        int aboveTile = (row > 0) ? expandedLevelMap[row - 1, col] : 0;
+        int belowTile = (row < expandedLevelMap.GetLength(0) - 1) ? expandedLevelMap[row + 1, col] : 0;
 
-        if (tileType == 1)
+        bool hasPelletLeft = (col > 0) && (expandedLevelMap[row, col - 1] == 5 || expandedLevelMap[row, col - 1] == 6);
+        bool hasPelletRight = (col < expandedLevelMap.GetLength(1) - 1) && (expandedLevelMap[row, col + 1] == 5 || expandedLevelMap[row, col + 1] == 6);
+        bool hasPelletAbove = (row > 0) && (expandedLevelMap[row - 1, col] == 5 || expandedLevelMap[row - 1, col] == 6);
+        bool hasPelletBelow = (row < expandedLevelMap.GetLength(0) - 1) && (expandedLevelMap[row + 1, col] == 5 || expandedLevelMap[row + 1, col] == 6);
+
+        if (tileType == 1) // Outer Corner
         {
-            if (leftTile == 2 && rightTile == 2)
-                return TileRotation.Rotate180;
-            else if (aboveTile == 2 && belowTile == 2)
-                return TileRotation.Default;
-            else if (leftTile == 2 && aboveTile == 2)
-                return TileRotation.Rotate270;
+            if (leftTile == 2 && aboveTile == 2)
+                return TileRotation.Rotate180; // Top-left corner, rotated 90 degrees
             else if (rightTile == 2 && aboveTile == 2)
+                return TileRotation.Rotate90; // Top-right corner, rotated 180 degrees
+            else if (leftTile == 2 && belowTile == 2)
+                return TileRotation.Rotate270; // Bottom-left corner, default rotation
+            else if (rightTile == 2 && belowTile == 2)
+                return TileRotation.Default; // Bottom-right corner, rotated 270 degrees
+        }
+        else if (tileType == 2) // Outer Wall
+        {
+            if ((leftTile == 2 || rightTile == 2) && !(hasPelletLeft || hasPelletRight))
+                return TileRotation.Rotate90; // Vertical rotation
+            else if ((aboveTile == 2 || belowTile == 2) && !(hasPelletAbove || hasPelletBelow))
+                return TileRotation.Default; // Horizontal rotation
+        }
+        else if (tileType == 3) // Inner Corner
+        {
+            bool isBottomRight = (leftTile == 4 && aboveTile == 4);
+            bool isBottomLeft = (rightTile == 4 && aboveTile == 4);
+            bool isTopRight = (leftTile == 4 && belowTile == 4);
+            bool isTopLeft = (rightTile == 4 && belowTile == 4);
+
+            if (isBottomRight)
+            {
+                if (isBottomLeft)
+                    return TileRotation.Default; // U-shaped connection
+                else if (isTopRight)
+                    return TileRotation.Rotate270;
+            }
+            else if (isBottomLeft)
+            {
+                if (isTopRight)
+                    return TileRotation.Rotate180; // U-shaped connection
+            }
+            else if (isTopRight)
+            {
+                if (isTopLeft)
+                    return TileRotation.Rotate90; // U-shaped connection
+            }
+        }
+        else if (tileType == 4) // Inner Wall
+        {
+            if (hasEmptySpace(leftTile) && hasEmptySpace(rightTile))
+                return TileRotation.Default; // Horizontal rotation
+            else if (hasEmptySpace(aboveTile) && hasEmptySpace(belowTile))
+                return TileRotation.Rotate90; // Vertical rotation
+        }
+        else if (tileType == 7) // T-Junction
+        {
+            if (leftTile == 2 && rightTile == 2 && belowTile == 2)
+                return TileRotation.Default;
+            else if (leftTile == 2 && rightTile == 2 && aboveTile == 2)
+                return TileRotation.Rotate180;
+            else if (leftTile == 2 && belowTile == 2 && aboveTile == 2)
+                return TileRotation.Rotate270;
+            else if (rightTile == 2 && belowTile == 2 && aboveTile == 2)
                 return TileRotation.Rotate90;
         }
-        else if (tileType == 3)
-        {
-            // Implement logic for corner tiles.
-        }
 
-        // Default rotation.
+        // Default rotation for pellets and power pellets.
         return TileRotation.Default;
     }
 
+    bool hasEmptySpace(int tile)
+    {
+        return tile == 0;
+    }
+
+    void expandLevelMap()
+    {
+        int numRows = levelMap.GetLength(0);
+        int numCols = levelMap.GetLength(1);
+
+        expandedLevelMap = new int[numRows * 2, numCols * 2];
+
+        for (int row = 0; row < numRows; row++)
+        {
+            for (int col = 0; col < numCols; col++)
+            {
+                // Copy the original value to the corresponding position in the expanded map.
+                expandedLevelMap[row, col] = levelMap[row, col];
+
+                // Mirror through the x-axis.
+                expandedLevelMap[row, numCols * 2 - col - 1] = levelMap[row, col];
+
+                // Mirror through the y-axis.
+                expandedLevelMap[numRows * 2 - row - 1, col] = levelMap[row, col];
+
+                // Mirror through both x-axis and y-axis.
+                expandedLevelMap[numRows * 2 - row - 1, numCols * 2 - col - 1] = levelMap[row, col];
+            }
+        }
+    }
 }
