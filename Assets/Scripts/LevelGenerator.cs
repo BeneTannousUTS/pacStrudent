@@ -21,6 +21,9 @@ public class LevelGenerator : MonoBehaviour
         Rotate270
     }
 
+    float levelHeight;
+    float levelWidth;
+    float cameraSize;
 
     public float tileSize = 1f;
 
@@ -50,6 +53,7 @@ public class LevelGenerator : MonoBehaviour
         clearScene();
         expandLevelMap();
         GenerateMaze();
+        setCameraSize();
     }
 
 
@@ -262,5 +266,18 @@ public class LevelGenerator : MonoBehaviour
                 expandedLevelMap[numRows * 2 - row - 1, numCols * 2 - col - 1] = levelMap[row, col];
             }
         }
+    }
+
+    void setCameraSize()
+    {
+        int numRows = expandedLevelMap.GetLength(0);
+        int numCols = expandedLevelMap.GetLength(1);
+
+        levelHeight = numRows * tileSize;
+        levelWidth = numCols * tileSize;
+        cameraSize = levelHeight / 2f;
+
+        Camera.main.orthographicSize = cameraSize + 1;
+        Camera.main.transform.position = new Vector3(levelWidth / 2f, -levelHeight / 2f, Camera.main.transform.position.z);
     }
 }
