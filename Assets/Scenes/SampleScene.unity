@@ -27039,6 +27039,58 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6365470367175052474, guid: d6a947a03ee532d4fa5efbbb7e8e4534, type: 3}
   m_PrefabInstance: {fileID: 1212291606}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1219422481
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1219422483}
+  - component: {fileID: 1219422482}
+  m_Layer: 0
+  m_Name: Level Generator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1219422482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219422481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d778ff52e8839e148a13a42691d05d1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outsideCornerPrefab: {fileID: 1513450800596675524, guid: 14943c90639dbef40a09c240359cefb9, type: 3}
+  outsideWallPrefab: {fileID: 1513450800596675524, guid: 68931e8ddc949874abd660c3ebf8e25f, type: 3}
+  insideCornerPrefab: {fileID: 1513450800596675524, guid: d6a947a03ee532d4fa5efbbb7e8e4534, type: 3}
+  insideWallPrefab: {fileID: 1513450800596675524, guid: 47997081cf780cb43b463589cca22482, type: 3}
+  standardPelletPrefab: {fileID: 3536972068068060969, guid: ed8305d2e3c014745a4ced1f19c726a8, type: 3}
+  powerPelletPrefab: {fileID: 2044949900906105767, guid: cc028cba5cd1763409d5af015d6609d4, type: 3}
+  tJunctionPrefab: {fileID: 8463179660778006758, guid: c48cdb320969e984c9cc3efb4f406dcc, type: 3}
+  tileSize: 1
+--- !u!4 &1219422483
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219422481}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1220487887
 PrefabInstance:
   m_ObjectHideFlags: 0
