@@ -54,7 +54,7 @@ public class pacStudentMovement : MonoBehaviour
     private void UpdateAnimator(Vector2 direction)
     {
         // Determine the animation state based on the movement direction
-        string animationState = "Idle"; // Default to Idle
+        string animationState = "Right"; // Default to Idle
 
         if (direction.y > 0.1f)
             animationState = "Right";
@@ -64,7 +64,7 @@ public class pacStudentMovement : MonoBehaviour
             animationState = "Down";
         else if (direction.x < -0.1f)
             animationState = "Up";
-        
+
 
         // Set the animation state in the Animator
         animator.Play(animationState);
