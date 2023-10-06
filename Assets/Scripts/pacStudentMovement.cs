@@ -16,6 +16,7 @@ public class pacStudentMovement : MonoBehaviour
 
     private int currentCornerIndex = 0; // Index of the current corner
     private Vector2 currentTarget; // Target position for movement
+    private Animator animator; // Reference to the Animator component
 
     void Start()
     {
@@ -24,6 +25,9 @@ public class pacStudentMovement : MonoBehaviour
 
         // Set the sprite's position to match the first corner
         transform.position = new Vector2(cornerCoordinates[currentCornerIndex].x, cornerCoordinates[currentCornerIndex].y);
+
+        // Get a reference to the Animator component
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -40,6 +44,29 @@ public class pacStudentMovement : MonoBehaviour
             // Move to the next corner in a clockwise fashion
             currentCornerIndex = (currentCornerIndex + 1) % cornerCoordinates.Length;
             currentTarget = cornerCoordinates[currentCornerIndex];
+
+            // Update the Animator based on the movement direction
+            UpdateAnimator(direction);
         }
+    }
+
+    // Update the Animator based on the movement direction
+    private void UpdateAnimator(Vector2 direction)
+    {
+        // Determine the animation state based on the movement direction
+        string animationState = "Idle"; // Default to Idle
+
+        if (direction.y > 0.1f)
+            animationState = "Right";
+        else if (direction.y < -0.1f)
+            animationState = "Left";
+        else if (direction.x > 0.1f)
+            animationState = "Down";
+        else if (direction.x < -0.1f)
+            animationState = "Up";
+        
+
+        // Set the animation state in the Animator
+        animator.Play(animationState);
     }
 }
