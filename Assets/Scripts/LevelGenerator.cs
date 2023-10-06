@@ -166,19 +166,23 @@ public class LevelGenerator : MonoBehaviour
         else if (tileType == 3) // Inner Corner - prioritise more complex corners
         {
             if ((leftTile == 4 && rightTile == 4 && aboveTile == 3 && belowTile == 4 && (bottomRightTile == 5 || bottomRightTile == 0))
-                || (leftTile == 3 && rightTile == 4 && aboveTile == 4 && belowTile == 4 && (bottomRightTile == 5 || bottomRightTile == 0))) 
+                || (leftTile == 3 && rightTile == 4 && aboveTile == 4 && belowTile == 4 && (bottomRightTile == 5 || bottomRightTile == 0))
+                || (rightTile == 3 && belowTile == 3 && bottomRightTile == 3)) 
                 return TileRotation.Rotate180;//top left
 
             else if ((belowTile == 4 && leftTile == 4 && aboveTile == 3 && rightTile == 4 && (bottomLeftTile == 5 || bottomLeftTile == 0)) 
-                || (leftTile == 4 && rightTile == 3 && aboveTile == 4 && belowTile == 4 && (bottomLeftTile == 5 || bottomLeftTile == 0))) 
+                || (leftTile == 4 && rightTile == 3 && aboveTile == 4 && belowTile == 4 && (bottomLeftTile == 5 || bottomLeftTile == 0))
+                || (leftTile == 3 && belowTile == 3 && bottomLeftTile == 3)) 
                 return TileRotation.Rotate90;//top right
 
             else if ((leftTile == 4 && rightTile == 4 && aboveTile == 4 && belowTile == 3 && (topRightTile == 5 || topRightTile == 0)) 
-                || (leftTile == 3 && rightTile == 4 && aboveTile == 4 && belowTile == 4 && (topRightTile == 5 || topRightTile == 0))) 
+                || (leftTile == 3 && rightTile == 4 && aboveTile == 4 && belowTile == 4 && (topRightTile == 5 || topRightTile == 0))
+                || (rightTile == 3 && aboveTile == 3 && topRightTile == 3)) 
                 return TileRotation.Rotate270;//bottom left
 
               else if ((leftTile == 4 && rightTile == 3 && aboveTile == 4 && belowTile == 4 && (topLeftTile == 5 || topLeftTile == 0))
-                || (leftTile == 4 && rightTile == 4 && aboveTile == 4 && belowTile == 3 && (topLeftTile == 5 || topLeftTile == 0)))
+                || (leftTile == 4 && rightTile == 4 && aboveTile == 4 && belowTile == 3 && (topLeftTile == 5 || topLeftTile == 0))
+                || (leftTile == 3 && aboveTile == 3 && topLeftTile == 3))
                 return TileRotation.Default;//bottom right
 
             else if ((rightTile == 4 && belowTile == 4) 
