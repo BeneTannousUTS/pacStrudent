@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour
 {
     void Start()
     {
-
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     // Update is called once per frame
@@ -22,6 +22,8 @@ public class UIManager : MonoBehaviour
     {
         // Prevent the UIManager from being destroyed when loading a new scene
         DontDestroyOnLoad(gameObject);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
         // Load the WalkingScene by its name or scene build index
         SceneManager.LoadScene("SampleScene");
