@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BackgroundMusic : MonoBehaviour
 {
-    public AudioClip introMusic; // The intro music clip
     public AudioClip backgroundMusic; // The background music clip
 
     private AudioSource audioSource;
@@ -14,16 +13,11 @@ public class BackgroundMusic : MonoBehaviour
     {
         // Get the AudioSource component attached to this GameObject
         audioSource = GetComponent<AudioSource>();
-
-        // Play the intro music once
-        audioSource.clip = introMusic;
-        audioSource.Play();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Check if the intro music has finished playing
         if (!audioSource.isPlaying)
         {
             // Loop the background music
