@@ -26,7 +26,7 @@ public class UIManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
 
         // Load the WalkingScene by its name or scene build index
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("LevelOne");
     }
 
     public void QuitGame()
@@ -41,7 +41,7 @@ public class UIManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.buildIndex == SceneManager.GetSceneByName("SampleScene").buildIndex)
+        if (scene.buildIndex == SceneManager.GetSceneByName("LevelOne").buildIndex)
         {
             // Find the GameObject with the tag "QuitButton"
             GameObject quitButton = GameObject.FindGameObjectWithTag("ExitButton");
