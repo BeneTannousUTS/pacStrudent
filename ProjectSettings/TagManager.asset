@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ExitButton
   - ScaredGhostTimer
+  - Unwalkable
   layers:
   - Default
   - TransparentFX
