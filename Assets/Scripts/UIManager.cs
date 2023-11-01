@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEditor;
+using Unity.VisualScripting;
 
 public class UIManager : MonoBehaviour
 {
@@ -15,7 +16,11 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKey("space"))
+        {
+            GameObject ghostTimer = GameObject.FindGameObjectWithTag("ScaredGhostTimer");
+            ghostTimer.SetActive(true);
+        }
     }
     
     public void LoadLevelOne()
@@ -50,6 +55,12 @@ public class UIManager : MonoBehaviour
 
             // Add the QuitGame method as a listener to the button's onClick event
             button.onClick.AddListener(LoadMenu);
+
+            GameObject ghostTimer = GameObject.FindGameObjectWithTag("ScaredGhostTimer");
+            if(ghostTimer != null)
+            {
+                ghostTimer.SetActive(false);
+            }
         }
     }
 }

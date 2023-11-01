@@ -18891,7 +18891,7 @@ GameObject:
   - component: {fileID: 806556906}
   m_Layer: 5
   m_Name: GhostScaredTimer
-  m_TagString: Untagged
+  m_TagString: ScaredGhostTimer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
