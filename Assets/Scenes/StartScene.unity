@@ -1850,6 +1850,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1830044805}
   - component: {fileID: 1830044804}
+  - component: {fileID: 1830044806}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1884,6 +1885,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1830044806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830044803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9279766311e14424c9c259ec0b446627, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cherryPrefab: {fileID: 2935932912223088508, guid: f4aad0f73cb0645a9bc41c481809e048, type: 3}
+  spawnInterval: 2
+  cherrySpeed: 5
 --- !u!1 &1913232080
 GameObject:
   m_ObjectHideFlags: 0
