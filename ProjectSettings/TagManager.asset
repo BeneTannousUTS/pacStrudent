@@ -8,6 +8,8 @@ TagManager:
   - ScaredGhostTimer
   - Unwalkable
   - Cherry
+  - Pellet
+  - PacStudent
   layers:
   - Default
   - TransparentFX
