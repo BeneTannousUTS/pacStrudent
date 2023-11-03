@@ -18054,6 +18054,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
+  walkingSound: {fileID: 8300000, guid: 3a92e880bf82e8447a5b5207e314c43d, type: 3}
+  collisionSound: {fileID: 8300000, guid: 9279e51e8a57e3b4e9940769e0b678a8, type: 3}
 --- !u!82 &779176150
 AudioSource:
   m_ObjectHideFlags: 0

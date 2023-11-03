@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PacStudentController : MonoBehaviour
 {
-    public float speed = 5.0f; // Adjust the speed as needed.
+    public float speed = 5.0f;
+    public AudioClip walkingSound;
+    public AudioClip collisionSound;
 
     private Vector2 targetPosition;
     private Vector2 startPosition;
@@ -12,6 +14,12 @@ public class PacStudentController : MonoBehaviour
     private Vector2 currentInput = Vector2.zero;
     private Vector2 lastInput = Vector2.zero;
     private Animator animator;
+    private AudioSource walkingAudio;
+    private AudioSource collisionAudio;
+    private bool walkingSoundPlaying = false;
+    private bool collisionSoundPlaying = false;
+
+
 
     void Start()
     {
@@ -19,6 +27,10 @@ public class PacStudentController : MonoBehaviour
         startPosition = transform.position;
         targetPosition = transform.position;
         animator = GetComponent<Animator>();
+        walkingAudio = gameObject.AddComponent<AudioSource>();
+        collisionAudio = gameObject.AddComponent<AudioSource>();
+        walkingAudio.clip = walkingSound;
+        collisionAudio.clip = collisionSound;
     }
 
     void Update()
@@ -31,6 +43,12 @@ public class PacStudentController : MonoBehaviour
         {
             MoveTowardsPosition();
         }
+
+        if (!isLerping)
+        {
+            walkingSoundPlaying = false;
+            walkingAudio.Stop(); // Stop the walking audio when not moving.
+        }
     }
 
     void CheckInput()
@@ -42,7 +60,7 @@ public class PacStudentController : MonoBehaviour
 
         if (horizontalInput > 0)
         {
-            currentInput =  Vector2.right;
+            currentInput = Vector2.right;
         }
         else if (horizontalInput < 0)
         {
@@ -67,6 +85,21 @@ public class PacStudentController : MonoBehaviour
             {
                 targetPosition = nextPosition;
                 isLerping = true;
+
+                if (walkingSound != null && !walkingSoundPlaying)
+                {
+                    walkingAudio.Play();
+                    walkingSoundPlaying = true;
+                }
+            }
+            else
+            {
+                // Play the collision sound if there's a collision.
+                if (collisionSound != null && !collisionSoundPlaying)
+                {
+                    collisionAudio.Play();
+                    collisionSoundPlaying = true;
+                }
             }
         }
     }
@@ -87,6 +120,10 @@ public class PacStudentController : MonoBehaviour
         {
             transform.position = targetPosition;
             isLerping = false;
+            if (currentInput == Vector2.zero)
+            {
+                walkingAudio.Stop();
+            }
         }
         else
         {
@@ -97,7 +134,7 @@ public class PacStudentController : MonoBehaviour
     private void UpdateAnimator(Vector2 direction)
     {
         // Determine the animation state based on the movement direction
-        string animationState = "Right"; // Default to Idle
+        string animationState = "Idle"; // Default to Idle
 
         if (direction.y > 0.1f)
             animationState = "Up";
@@ -125,6 +162,7 @@ public class PacStudentController : MonoBehaviour
             }
         }
 
+        collisionSoundPlaying = false;
         return true; // The next position is walkable.
     }
 }
