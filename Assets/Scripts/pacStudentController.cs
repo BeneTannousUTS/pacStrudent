@@ -7,6 +7,7 @@ public class PacStudentController : MonoBehaviour
     public float speed = 5.0f;
     public AudioClip walkingSound;
     public AudioClip collisionSound;
+    public ParticleSystem dust;
 
     private Vector2 targetPosition;
     private Vector2 startPosition;
@@ -48,6 +49,10 @@ public class PacStudentController : MonoBehaviour
         {
             walkingSoundPlaying = false;
             walkingAudio.Stop(); // Stop the walking audio when not moving.
+            if (dust.isPlaying)
+            {
+                dust.Stop();
+            }
         }
     }
 
@@ -91,6 +96,7 @@ public class PacStudentController : MonoBehaviour
                     walkingAudio.Play();
                     walkingSoundPlaying = true;
                 }
+                dust.Play();
             }
             else
             {
